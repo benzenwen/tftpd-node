@@ -1,0 +1,13 @@
+{
+  "name": "tftpbw",
+  "description" : "A trivial ftp server.",
+  "dependencies": {
+  },
+  "engines" : { 
+    "node" : ">=0.8.11"},
+  "keywords" : ["tftp", "udp", "server"],
+  "version": "0.1.0",
+  "author" : "Ben Wen",
+  "contributors" :  "",
+  "license" : "MIT"
+}
