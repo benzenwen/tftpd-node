@@ -115,10 +115,11 @@ function handleRRQ(RQ, rinfo) {
       debugLog('Read handler server listening ' +
 	       address.address + ':' + address.port + '. Sending first data-bearing packet.', 2)
       // FIXME actually read data from disk.
-      var aBuffer = new Buffer(9)
+      var aBuffer = new Buffer(516) // 2 byte Opcode + 2 byte Block # + 512 bytes data
+      
       aBuffer.writeUInt16BE(3, 0) // Opcode 3 = DATA, offset = 0
       aBuffer.writeUInt16BE(1, 2) // Block # = 1, offset = 2
-      aBuffer.write('Hello', 4, 'ascii') // FIXME defaults to ascii
+      fs.readSync(aFile, aBuffer, 4, 512, 0)
       aServer.send(aBuffer, 0, aBuffer.length, rinfo.port, rinfo.address, function (err) { debugLog('Done sending.') })
     })
 
@@ -126,13 +127,19 @@ function handleRRQ(RQ, rinfo) {
 		      , fd: aFile }
     aServer.bind()
   }
+
+  function handleRead(msg, rinfo) {
+    // We should just be getting ACKs and ERRORs.
+    debugLog('got handleRead event.', 3)
+    // FIXME
+    var aBuffer = new Buffer(4)
+    aBuffer.writeUInt16BE(3, 0) // Opcode 3 = DATA, offset = 0
+    aBuffer.writeUInt16BE(2, 2) // Block # = 1, offset = 2
+    aServer.send(aBuffer, 0, aBuffer.length, rinfo.port, rinfo.address, function (err) { debugLog('Done sending.') })
+  }
+
 }
 
-function handleRead(msg, rinfo) {
-  // We should just be getting ACKs and ERRORs.
-  debugLog('got handleRead event.', 3)
-  
-}
 
 var server = dgram.createSocket('udp4')
 
