@@ -5,6 +5,7 @@ var debugLog = require('./misc').debugLog
 , sessions = {}		// Active sessions
 , homedir = '/private/tftpboot/'
 
+// FIXME Collapse handle[W,R]RQ with a 3rd parameter
 function handleRRQ(payload, rinfo) {
   // Check to see if there's already a process for that host:port
   var key = parseKey(rinfo)
