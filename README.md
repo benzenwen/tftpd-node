@@ -1,6 +1,6 @@
 # Trivial file transfer server (tftp) in node.js #
 
-* work in progress *
+(A work in progress)
 
 A tftpd in node.js.
 
